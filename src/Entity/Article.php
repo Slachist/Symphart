@@ -27,6 +27,18 @@ class Article
     private $body;
 
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $Id): self
+    {
+        $this->id = $Id;
+        return $this;
+    }
+
+
     public function getTitle(): ?string
     {
         return $this->title;
@@ -41,12 +53,12 @@ class Article
 
     public function getBody(): ?string
     {
-        return $this->Body;
+        return $this->body;
     }
 
-    public function setBody(string $Body): self
+    public function setBody(string $body): self
     {
-        $this->Body = $Body;
+        $this->body = $body;
 
         return $this;
     }
