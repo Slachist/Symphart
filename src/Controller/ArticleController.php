@@ -72,6 +72,22 @@ class ArticleController extends Controller {
         ('article' => $article));
     }
 
+    /**
+     * @Route("/article/delete/{id}")
+     * @Method({"DELETE"})
+     */
+    public function delete(Request $request, $id){
+        $article = $this->getDoctrine()->getRepository
+        (Article::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($article);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
+    }
+
 
     // /**
     //  * @Route("/article/save")
