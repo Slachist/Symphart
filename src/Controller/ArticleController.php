@@ -61,6 +61,44 @@ class ArticleController extends Controller {
                 'form' => $form->createView()));
     }
 
+   /**
+     * @Route("/article/edit/{id}", name="edit_article")
+     * METHODE({"GET","POST"})
+     */
+    public function edit(request $request, $id)
+    {
+        $article = new Article();
+        $article = $this->getDoctrine()->getRepository
+        (Article::class)->find($id);
+
+        $form = $this->createFormBuilder($article)
+            ->add('title',TextType::class,array('attr' =>
+            array('class' => 'form-control')))
+            ->add('body', TextareaType::class,array(
+                'required' => false,
+                'attr' => array('class' => 'form-control')
+            ))
+            ->add('save',SubmitType::class,array(
+                'label' => 'Update',
+                'attr' => array('class' => 'btn btn-primary mt-3')
+            ))
+            ->getForm();
+        
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                //$article = $form->getData();
+                $entityManager = $this->getDoctrine()->getManager();
+                //$entityManager->persist($article);
+                $entityManager->flush();
+
+                return $this->redirectToRoute('article_list');
+            }
+
+            return $this->render('article/edit.html.twig', array(
+                'form' => $form->createView()));
+    }
+
     /**
      * @Route("/article/{id}",name="article_show")
      */
@@ -76,7 +114,7 @@ class ArticleController extends Controller {
      * @Route("/article/delete/{id}")
      * @Method({"DELETE"})
      */
-    public function delete(Request $request, $id){
+    public function delete(Request $request,  $id){
         $article = $this->getDoctrine()->getRepository
         (Article::class)->find($id);
 
